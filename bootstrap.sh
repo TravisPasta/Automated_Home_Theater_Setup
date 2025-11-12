@@ -24,9 +24,6 @@ install_pkg() {
 # Basic utilities
 install_pkg git curl wget openssh-server firefox vlc
 
-# Enable SSH
-sudo systemctl enable --now ssh
-
 # Enable Wake on LAN using NetworkManager
 for iface in $(nmcli -t -f DEVICE device status | grep -v lo); do
     echo "Enabling WOL for $iface..."
