@@ -29,9 +29,7 @@ $apps = @(
     "Mozilla.Firefox",
     "Git.Git",
     "Jellyfin.JellyfinMediaPlayer",
-    "9N95Q1ZZPMH4",   # Twinkle Tray (Microsoft Store)
-    "Discord.Discord",
-    "Spotify.Spotify"
+    "9N95Q1ZZPMH4"   # Twinkle Tray (Microsoft Store)
 )
 
 foreach ($app in $apps) {

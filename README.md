@@ -31,8 +31,8 @@ Works on:
 ### 🎬 Software installed
 | Type | Software |
 |------|-----------|
-| Media | Jellyfin Media Player, VLC, Plex (manual download), Spotify |
-| Tools | Git, Firefox, SSH Server, Discord |
+| Media | Jellyfin Media Player, VLC, Plex (manual download) |
+| Tools | Git, Firefox, SSH Server |
 | System | Wake-on-LAN enabled |
 | Linux-only | Tilix, ddcutil, Extension Manager |
 | Windows-only | Twinkle Tray, Windows 11 Debloater, Winget |
