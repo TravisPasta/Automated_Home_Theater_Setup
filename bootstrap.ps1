@@ -4,25 +4,6 @@ Write-Host "=== Phase 2: Automated Home Theater Setup (Windows) ==="
 # Ensure TLS 1.2
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-# Detect if OS is Windows 11
-$osVersion = (Get-ComputerInfo).WindowsProductName
-$isWin11 = $osVersion -match "Windows 11"
-
-# Run Windows 11 Debloater
-if ($isWin11) {
-    Write-Host "Detected Windows 11 – running debloater..."
-    $debloaterUrl = "https://github.com/Raphire/Win11Debloat/releases/latest/download/Get.ps1"
-    $debloaterPath = "$env:TEMP\Get.ps1"
-    try {
-        Invoke-WebRequest -Uri $debloaterUrl -OutFile $debloaterPath -ErrorAction Stop
-        Write-Host "Running latest downloaded debloater..."
-        & PowerShell -ExecutionPolicy Bypass -File $debloaterPath
-    } catch {
-        Write-Host "Download failed. Using local debloater..."
-        & PowerShell -ExecutionPolicy Bypass -File "$PSScriptRoot\Win11Debloater\Get.ps1"
-    }
-}
-
 # Install applications
 $apps = @(
     "VideoLAN.VLC",
@@ -50,5 +31,8 @@ Get-NetAdapter | ForEach-Object {
 
 # Plex manual download link
 Start-Process "https://www.plex.tv/media-server-downloads/?cat=computer&plat=windows"
+
+Write-Host "Please go into this repository and run the Windows 11 Debloater script manually."
+Write-Host "If desired, get the new Debloater from: https://github.com/Raphire/Win11Debloat/releases/latest"
 
 Write-Host "=== Windows Setup Complete! ==="

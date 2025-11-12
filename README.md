@@ -57,6 +57,16 @@ Reboot, then continue with Phase 2.
 irm https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/main/bootstrap.ps1 | iex
 ```
 
+### Phase 3 (optional: Windows 11 debloat)
+
+Run the Windows 11 Debloater script located in the `Win11Debloater` folder of this repository. If the script is not present, download the latest release from [here](https://github.com/Raphire/Win11Debloat/releases/latest).
+
+Or use the powershell command for an automatic download and execution:
+
+```powershell
+& ([scriptblock]::Create((irm "https://debloat.raphi.re/")))
+```
+
 ---
 
 ## 🐧 Linux Usage
