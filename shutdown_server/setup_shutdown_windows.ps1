@@ -73,12 +73,14 @@ try {
 } catch { Err "Failed to install Flask: $_" }
 
 # --- Ensure target folder ---
+Log "Setting up shutdown server directory..."
 $targetDir = "C:\shutdown_server"
 if (!(Test-Path $targetDir)) {
     New-Item -ItemType Directory -Path $targetDir | Out-Null
 }
 
 # --- Download shutdown_server.py ---
+Log "Downloading shutdown_server.py..."
 $localFile = Join-Path $PSScriptRoot "shutdown_server.py"
 if (!(Test-Path $localFile)) {
     Log "shutdown_server.py not found locally — downloading from GitHub..."
@@ -92,6 +94,7 @@ if (!(Test-Path $localFile)) {
 }
 
 # --- Copy file into target dir ---
+Log "Copying shutdown_server.py to $targetDir ..."
 Copy-Item -Path $localFile -Destination (Join-Path $targetDir "shutdown_server.py") -Force
 Log "Copied shutdown_server.py to $targetDir"
 
@@ -104,6 +107,7 @@ try {
 }
 
 # --- Create Autostart ---
+Log "Creating autostart entry..."
 $batPath = Join-Path $targetDir "autostart_shutdown.bat"
 $vbsPath = Join-Path $targetDir "launch_hidden.vbs"
 
