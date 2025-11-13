@@ -18,12 +18,12 @@ if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
 Write-Host "[*] Installing benchmark applications via Winget / manual fallback..."
 
 # Cinebench (Windows) :contentReference[oaicite:3]{index=3}
-Write-Host "Downloading Cinebench..."
-Invoke-WebRequest -Uri "https://download.maxon.net/Cinebench_2024_x64.zip" -OutFile "$env:TEMP\Cinebench2024.zip"
+Write-Host "Installing Cinebench..."
+winget install --id Maxon.CinebenchR23 -e --accept-source-agreements --accept-package-agreements
 
 # Geekbench 6 :contentReference[oaicite:4]{index=4}
-Write-Host "Downloading Geekbench 6..."
-Invoke-WebRequest -Uri "https://cdn.geekbench.com/Geekbench-6.5.0-Windows64.exe" -OutFile "$env:TEMP\Geekbench6Setup.exe"
+Write-Host "Installing Geekbench 6..."
+winget install --id PrimateLabs.Geekbench.6 -e --accept-source-agreements --accept-package-agreements
 
 # HandBrake video encoding test
 Write-Host "Installing HandBrake..."
