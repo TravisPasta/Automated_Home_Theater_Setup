@@ -11,7 +11,8 @@ $apps = @(
     "Git.Git",
     "Jellyfin.JellyfinMediaPlayer",
     "9N95Q1ZZPMH4",   # Twinkle Tray (Microsoft Store)
-    "Python.Python.3.14"  # Python 3.14
+    "Python.Python.3.14",  # Python 3.14
+    "Plex.Plex"
 )
 
 foreach ($app in $apps) {
@@ -29,9 +30,6 @@ Write-Host "Attempting to enable Wake on LAN..."
 Get-NetAdapter | ForEach-Object {
     powercfg -deviceenablewake "$($_.Name)"
 }
-
-# Plex manual download link
-Start-Process "https://www.plex.tv/media-server-downloads/?cat=computer&plat=windows"
 
 Write-Host "Please go into this repository and run the Windows 11 Debloater script manually."
 Write-Host "If desired, get the new Debloater from: https://github.com/Raphire/Win11Debloat/releases/latest"
