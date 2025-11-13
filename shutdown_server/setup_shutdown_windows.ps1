@@ -71,6 +71,7 @@ try {
     python -m pip install --upgrade pip setuptools wheel
     python -m pip install flask
 } catch { Err "Failed to install Flask: $_" }
+Log "Flask installed."
 
 # --- Ensure target folder ---
 Log "Setting up shutdown server directory..."
