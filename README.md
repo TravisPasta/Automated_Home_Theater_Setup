@@ -5,6 +5,16 @@ This repository sets up a **home theater PC** (Windows or Linux) with all essent
 
 ---
 
+## 📽️ Overview
+
+1. a. [Windows setup (PowerShell)](#1a-windows-setup)
+
+   b. [Linux setup (Bash)](#1b-linux-setup)
+2. Optional: [Benchmarking setup (Windows or Linux)](#2-benchmarking-setup)
+3. Optional: [Home Assistant remote shutdown setup (Windows or Linux)](#3-home-assistant-remote-shutdown)
+
+---
+
 ## 🗂 Repository structure
 
 ```
@@ -46,7 +56,7 @@ Works on:
 
 ---
 
-## 🪟 Windows Usage
+## 1a) Windows Setup
 
 ### Phase 1 (prepare system)
 Run **PowerShell as Administrator**:
@@ -76,7 +86,7 @@ Or use the powershell command for an automatic download and execution:
 
 ---
 
-## 🐧 Linux Usage
+## 1b) Linux Setup
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/main/bootstrap.sh | bash
@@ -94,12 +104,30 @@ curl -fsSL https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_
 
 ---
 
-### 🔌 Home Assistant Remote Shutdown
+## 2. Benchmarking setup
+To benchmark your media PC, run the following after completing the main setup.
+
+### Linux Benchmarking
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/benchmark/benchmark.sh | bash
+```
+
+### Windows Benchmarking
+
+Open **PowerShell (Admin)** and run:
+
+```powershell
+irm https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/benchmark/benchmark.ps1 | iex
+```
+
+---
+
+## 3. Home Assistant Remote Shutdown
 
 This optional feature allows you to **shut down or restart your media PC** using a single **Home Assistant automation** or any HTTP client.
 
-#### Linux Setup
-
+### Linux Setup
 ```bash
 curl -fsSL https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/benchmark/shutdown_server/setup_shutdown_linux.sh | bash
 ```
@@ -114,7 +142,7 @@ This script:
 
 ---
 
-#### Windows Setup
+### Windows Setup
 
 Open **PowerShell (Admin)** and run:
 
