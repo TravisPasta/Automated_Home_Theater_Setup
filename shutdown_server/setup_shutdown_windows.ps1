@@ -83,7 +83,7 @@ $localFile = Join-Path $PSScriptRoot "shutdown_server.py"
 if (!(Test-Path $localFile)) {
     Log "shutdown_server.py not found locally — downloading from GitHub..."
     try {
-        $repoUrl = "https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/main/shutdown_server/shutdown_server.py"
+        $repoUrl = "https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/benchmark/shutdown_server/shutdown_server.py"
         Invoke-WebRequest -Uri $repoUrl -OutFile $localFile -UseBasicParsing -ErrorAction Stop
         Log "Downloaded shutdown_server.py successfully."
     } catch {
