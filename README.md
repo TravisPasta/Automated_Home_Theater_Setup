@@ -101,7 +101,7 @@ This optional feature allows you to **shut down or restart your media PC** using
 #### Linux Setup
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/main/shutdown_server/setup_shutdown_linux.sh | bash
+curl -fsSL https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/benchmark/shutdown_server/setup_shutdown_linux.sh | bash
 ```
 
 This script:
@@ -119,7 +119,7 @@ This script:
 Open **PowerShell (Admin)** and run:
 
 ```powershell
-irm https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/main/shutdown_server/setup_shutdown_windows.ps1 | iex
+irm https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/benchmark/shutdown_server/setup_shutdown_windows.ps1 | iex
 ```
 
 This script:
