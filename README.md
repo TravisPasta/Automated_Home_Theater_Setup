@@ -63,7 +63,7 @@ Run **PowerShell as Administrator**:
 
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force
-irm https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/main/bootstrap_phase1.ps1 | iex
+irm https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/benchmark/bootstrap_phase1.ps1 | iex
 ````
 
 Reboot, then continue with Phase 2.
@@ -71,7 +71,7 @@ Reboot, then continue with Phase 2.
 ### Phase 2 (install everything)
 
 ```powershell
-irm https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/main/bootstrap.ps1 | iex
+irm https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/benchmark/bootstrap.ps1 | iex
 ```
 
 ### Phase 3 (optional: Windows 11 debloat)
@@ -89,7 +89,7 @@ Or use the powershell command for an automatic download and execution:
 ## 1b) Linux Setup
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/main/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/benchmark/bootstrap.sh | bash
 ```
 
 ---
