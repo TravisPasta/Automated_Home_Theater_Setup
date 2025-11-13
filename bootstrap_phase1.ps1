@@ -17,6 +17,12 @@ if (-not (Get-Command git.exe -ErrorAction SilentlyContinue)) {
     winget install --id Git.Git -e --source winget
 }
 
+# Install python if missing
+if (-not (Get-Command python -ErrorAction SilentlyContinue)) {
+    Write-Host "Installing Python..."
+    winget install --id Python.Python.3.14 -e --source winget
+}
+
 # Update Windows
 Write-Host "Updating Windows..."
 Install-Module PSWindowsUpdate -Force -Confirm:$false

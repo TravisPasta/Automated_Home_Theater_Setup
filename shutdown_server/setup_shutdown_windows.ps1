@@ -21,7 +21,7 @@ Log "=== Installing Home Assistant Shutdown Web Server (Windows) ==="
 # Ensure TLS
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-# Helper: install winget if missing
+# Ensure winget
 if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
     Log "winget not found. Attempting to install App Installer (winget)..."
     try {
@@ -31,113 +31,79 @@ if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
         Remove-Item $tmp -ErrorAction SilentlyContinue
         Log "winget installed."
     } catch {
-        Warn "Failed to install winget automatically. Please install winget manually and re-run this script."
+        Warn "Failed to install winget automatically. Please install it manually, then re-run."
     }
 }
 
-# Install Python using winget (if missing)
+# --- Install Python if missing ---
 function Ensure-Python {
     if (Get-Command python -ErrorAction SilentlyContinue) {
-        Log "Python already available: $(python --version 2>&1)"
+        Log "Python found: $(python --version 2>&1)"
         return
     }
 
     if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
-        Err "winget is required to auto-install Python. Install winget first or install Python manually."
+        Err "winget is required to install Python. Please install it first."
     }
 
-    # Try common Python package ids; fall back to generic id
-    $pythonCandidates = @(
-        "Python.Python.3.12",    # if present
-        "Python.Python.3.11",
-        "Python.Python.3",
-        "Python.Python"
-    )
-
+    $ids = @("Python.Python.3.14", "Python.Python.3.12", "Python.Python.3")
     $installed = $false
-    foreach ($id in $pythonCandidates) {
+    foreach ($id in $ids) {
         try {
             Log "Trying to install Python via winget id: $id"
             winget install --id $id --accept-package-agreements --accept-source-agreements -e -h
             Start-Sleep -Seconds 3
             if (Get-Command python -ErrorAction SilentlyContinue) { $installed = $true; break }
-        } catch {
-            Warn "winget install attempt for $id failed (will try next candidate)."
-        }
+        } catch { Warn "Python install attempt for $id failed." }
     }
 
-    if (-not $installed) {
-        Warn "Automatic Python install failed via winget. Please install Python from https://www.python.org/ and re-run this script."
-        Err "Python not installed."
-    }
+    if (-not $installed) { Err "Python install failed. Install manually and re-run." }
 
-    # Ensure the new python is usable in this session
-    $pythonPath = (Get-Command python -ErrorAction SilentlyContinue).Source
-    if (-not $pythonPath) {
-        Warn "python not found on PATH immediately after install. Attempting to read common install locations..."
-        $possible = @(
-            "$env:LOCALAPPDATA\Programs\Python\Python312\python.exe",
-            "$env:ProgramFiles\Python\python.exe",
-            "$env:ProgramFiles(x86)\Python\python.exe"
-        )
-        foreach ($p in $possible) {
-            if (Test-Path $p) {
-                $pythonPath = $p
-                break
-            }
-        }
-    }
-
-    if ($pythonPath) {
-        Log "Python located at: $pythonPath"
-    } else {
-        Warn "Could not discover python executable path automatically. You may need to log out/in for PATH to refresh."
-    }
-
-    # Ensure pip is present
-    try {
-        & python -m pip --version
-    } catch {
-        Log "pip missing — attempting to bootstrap ensurepip..."
-        try {
-            & python -m ensurepip --upgrade
-            & python -m pip install --upgrade pip
-        } catch {
-            Warn "Failed to ensure pip. You may need to install pip manually."
-        }
-    }
-    Log "Python installed and pip available: $(python --version 2>&1)"
+    try { python -m ensurepip --upgrade; python -m pip install --upgrade pip } catch { Warn "Could not upgrade pip." }
+    Log "Python installed and pip ready: $(python --version 2>&1)"
 }
 
 Ensure-Python
 
-# Install Flask
+# --- Install Flask ---
 Log "Installing Flask via pip..."
 try {
-    & python -m pip install --upgrade pip setuptools wheel
-    & python -m pip install flask
-    Log "Flask installed."
-} catch {
-    Err "Failed to install Flask using pip: $_"
-}
+    python -m pip install --upgrade pip setuptools wheel
+    python -m pip install flask
+} catch { Err "Failed to install Flask: $_" }
 
-# Copy shutdown_server.py to target folder
+# --- Ensure target folder ---
 $targetDir = "C:\shutdown_server"
 if (!(Test-Path $targetDir)) {
     New-Item -ItemType Directory -Path $targetDir | Out-Null
 }
-Copy-Item -Path (Join-Path $PSScriptRoot "shutdown_server.py") -Destination (Join-Path $targetDir "shutdown_server.py") -Force
+
+# --- Download shutdown_server.py ---
+$localFile = Join-Path $PSScriptRoot "shutdown_server.py"
+if (!(Test-Path $localFile)) {
+    Log "shutdown_server.py not found locally — downloading from GitHub..."
+    try {
+        $repoUrl = "https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/main/shutdown_server/shutdown_server.py"
+        Invoke-WebRequest -Uri $repoUrl -OutFile $localFile -UseBasicParsing -ErrorAction Stop
+        Log "Downloaded shutdown_server.py successfully."
+    } catch {
+        Err "Could not download shutdown_server.py from GitHub: $_"
+    }
+}
+
+# --- Copy file into target dir ---
+Copy-Item -Path $localFile -Destination (Join-Path $targetDir "shutdown_server.py") -Force
 Log "Copied shutdown_server.py to $targetDir"
 
-# Add Firewall Rule
+# --- Add Firewall Rule ---
 try {
     New-NetFirewallRule -DisplayName "Shutdown Server" -Direction Inbound -Protocol TCP -LocalPort 5050 -Action Allow -ErrorAction Stop
     Log "Firewall rule added for port 5050."
 } catch {
-    Warn "Could not add firewall rule (it may already exist): $_"
+    Warn "Firewall rule might already exist: $_"
 }
 
-# Create hidden autostart (VBS + BAT) so server runs on login (user-level)
+# --- Create Autostart ---
 $batPath = Join-Path $targetDir "autostart_shutdown.bat"
 $vbsPath = Join-Path $targetDir "launch_hidden.vbs"
 
@@ -151,15 +117,12 @@ Set WshShell = Nothing
 "@
 Set-Content -Path $vbsPath -Value $vbsContent -Encoding ASCII
 
-# Place VBS into user's Startup folder (current user)
 try {
     $startup = [Environment]::GetFolderPath('Startup')
     Copy-Item -Path $vbsPath -Destination (Join-Path $startup (Split-Path $vbsPath -Leaf)) -Force
-    Log "Startup shortcut created for current user. Server will start after user login."
+    Log "Autostart added to startup folder."
 } catch {
-    Warn "Failed to create autostart in Startup folder: $_"
+    Warn "Failed to add to startup folder: $_"
 }
 
-# Alternatively, we can create a Windows Service (requires NSSM or sc.exe). For simplicity we use autostart here.
-
-Log "✅ Shutdown Web Server installed. To test: curl -X POST http://<IP>:5050/shutdown"
+Log "✅ Setup complete! Test with: curl -X POST http://<PC_IP>:5050/shutdown"
