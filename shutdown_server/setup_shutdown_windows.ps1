@@ -82,7 +82,19 @@ if (!(Test-Path $targetDir)) {
 
 # --- Download shutdown_server.py ---
 Log "Downloading shutdown_server.py..."
+
+# Handle cases where the script is run via iex (no $PSScriptRoot)
+if ([string]::IsNullOrWhiteSpace($PSScriptRoot)) {
+    $scriptTempDir = Join-Path $env:TEMP "shutdown_setup"
+    if (!(Test-Path $scriptTempDir)) {
+        New-Item -ItemType Directory -Path $scriptTempDir | Out-Null
+    }
+    $PSScriptRoot = $scriptTempDir
+    Log "No script root detected (running from iex). Using temp path: $PSScriptRoot"
+}
+
 $localFile = Join-Path $PSScriptRoot "shutdown_server.py"
+
 if (!(Test-Path $localFile)) {
     Log "shutdown_server.py not found locally — downloading from GitHub..."
     try {
@@ -93,6 +105,7 @@ if (!(Test-Path $localFile)) {
         Err "Could not download shutdown_server.py from GitHub: $_"
     }
 }
+
 
 # --- Copy file into target dir ---
 Log "Copying shutdown_server.py to $targetDir ..."
