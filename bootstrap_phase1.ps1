@@ -5,6 +5,7 @@ Write-Host "=== Phase 1: Preparing Windows ==="
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 # Install Winget if missing
+Write-Host "Checking for Winget..."
 if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
     Write-Host "Installing Winget..."
     Invoke-WebRequest -Uri "https://aka.ms/getwinget" -OutFile "$env:TEMP\winget.msixbundle"
@@ -12,12 +13,14 @@ if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
 }
 
 # Install Git if missing
+Write-Host "Checking for Git..."
 if (-not (Get-Command git.exe -ErrorAction SilentlyContinue)) {
     Write-Host "Installing Git..."
     winget install --id Git.Git -e --source winget
 }
 
 # Install python if missing
+Write-Host "Checking for Python..."
 if (-not (Get-Command python -ErrorAction SilentlyContinue)) {
     Write-Host "Installing Python..."
     winget install --id Python.Python.3.14 -e --source winget

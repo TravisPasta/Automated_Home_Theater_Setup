@@ -10,7 +10,8 @@ $apps = @(
     "Mozilla.Firefox",
     "Git.Git",
     "Jellyfin.JellyfinMediaPlayer",
-    "9N95Q1ZZPMH4"   # Twinkle Tray (Microsoft Store)
+    "9N95Q1ZZPMH4",   # Twinkle Tray (Microsoft Store)
+    "Python.Python.3.14"  # Python 3.14
 )
 
 foreach ($app in $apps) {
