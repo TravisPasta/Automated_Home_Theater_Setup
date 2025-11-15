@@ -127,6 +127,19 @@ irm https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/b
 
 This optional feature allows you to **shut down or restart your media PC** using a single **Home Assistant automation** or any HTTP client.
 
+### BIOS Setup
+1. Reboot into BIOS/UEFI settings
+2. Enable **Wake-on-LAN** (may be under Power Management or Advanced settings)
+3. Save and exit
+
+Note: Wake-on-LAN typically only works over Ethernet, not Wi-Fi.
+
+Note 2: Some systems require "Deep Sleep" or similar settings to be disabled for WoL to function.
+
+Note 3: Every BIOS is different; refer to your motherboard/laptop manual if possible. Also, the same cpu does not guarantee the same BIOS options or working WoL on all systems.
+
+---
+
 ### Linux Setup
 ```bash
 curl -fsSL https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/benchmark/shutdown_server/setup_shutdown_linux.sh | bash
@@ -158,7 +171,34 @@ This script:
 * Adds a firewall rule for port 5050
 * Creates auto-start scripts for startup
 
---- 
+
+
+### Enhancing Windows Wake-on-LAN Setup (Probably required)
+
+#### 1) Enable network connectivity during standby
+
+1. Press **Win + R**, type `gpedit.msc`, hit Enter
+2. Navigate to:
+   *Computer Configuration → Administrative Templates → System → Power Management → Sleep Settings*
+3. Open **Allow network connectivity during connected-standby (plugged in)**
+4. Set **Enabled**, click **Apply → OK**
+
+#### 2) Enable WoL in Device Manager
+
+1. Open **Device Manager**
+2. Go to **Network adapters**
+3. Right-click your Ethernet adapter → **Properties**
+4. **Advanced tab:**
+   Set **Wake on Magic Packet** → **Enabled**
+5. **Power Management tab:**
+    - Tick **Allow this device to wake the computer**
+6. Click **OK**
+
+#### 3) Reboot
+
+A restart is required for WoL to function correctly.
+
+---
 
 ✅ **Test the functionality on a different machine using:**
 
