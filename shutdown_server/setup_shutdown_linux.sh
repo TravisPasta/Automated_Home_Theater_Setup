@@ -15,11 +15,52 @@ else
 fi
 
 # --- Install Python + tools ---
-$INSTALL python3 python3-pip curl ufw
+$INSTALL python3 python3-pip curl ufw ethtool
 
-# --- Install Flask system-wide ---
+# --- Install Flask for user ---
 echo "[*] Installing Flask..."
 python3 -m pip install --user --upgrade pip setuptools wheel flask
+
+# -------------------------------------------------------------------
+#                         WAKE-ON-LAN SETUP
+# -------------------------------------------------------------------
+
+echo "=== Enabling Wake-on-LAN (MagicPacket) ==="
+
+# Automatically detect primary interface (non-loopback, UP state)
+INTERFACE=$(ip -o link show | awk -F': ' '$2 != "lo" {print $2; exit}')
+
+echo "[*] Detected network interface: $INTERFACE"
+
+# Check if interface supports WoL
+SUPPORTS=$(sudo ethtool "$INTERFACE" | grep "Supports Wake-on" | awk '{print $3}')
+CURRENT=$(sudo ethtool "$INTERFACE" | grep "Wake-on" | awk '{print $2}' | tail -1)
+
+echo "[*] Interface supports WoL modes: $SUPPORTS"
+echo "[*] Current WoL setting: $CURRENT"
+
+if [[ "$SUPPORTS" != *g* ]]; then
+    echo "[✖] This network card does NOT support MagicPacket (g). WoL cannot be enabled."
+else
+    echo "[*] Enabling WoL now..."
+    sudo ethtool -s "$INTERFACE" wol g
+
+    # Persistent WoL via NetworkManager
+    CONN_NAME=$(nmcli -t -f NAME connection show | head -n 1)
+    echo "[*] Detected NetworkManager connection: $CONN_NAME"
+
+    echo "[*] Making WoL persistent..."
+    sudo nmcli connection modify "$CONN_NAME" 802-3-ethernet.wake-on-lan magic
+
+    echo "[*] Reapplying connection..."
+    sudo nmcli device reapply "$INTERFACE" || true
+
+    echo "✅ Wake-on-LAN enabled and made persistent (MagicPacket mode)"
+fi
+
+# -------------------------------------------------------------------
+#                       SHUTDOWN SERVER INSTALL
+# -------------------------------------------------------------------
 
 # --- Prepare target directory in home folder ---
 TARGET_DIR="$HOME/shutdown_server"
@@ -67,6 +108,9 @@ sudo ufw allow 5050/tcp || true
 # --- Auto-start on login for user session ---
 loginctl enable-linger "$USER"
 
-echo "✅ Shutdown Web Server installed and running on port 5050 (user service)"
-echo "Test with: curl -X POST http://<IP>:5050/shutdown"
-echo "Service controlled via: systemctl --user status|restart|stop shutdown_server.service"
+echo "==============================================="
+echo "  ✅ Shutdown Web Server installed"
+echo "  ✅ Service running on port 5050"
+echo "  ✅ Persistent Wake-on-LAN configured"
+echo "==============================================="
+echo "Test shutdown with: curl -X POST http://<IP>:5050/shutdown"
