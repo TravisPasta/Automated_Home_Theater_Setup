@@ -29,6 +29,10 @@ winget install --id PrimateLabs.Geekbench.6 -e --accept-source-agreements --acce
 Write-Host "Installing HandBrake..."
 winget install --id HandBrake.HandBrake -e --accept-source-agreements --accept-package-agreements
 
+# FurMark GPU stress test
+Write-Host "Installing FurMark..."
+winget install --id Geeks3D.FurMark.2 -e --accept-source-agreements --accept-package-agreements
+
 # Install 3DMark benchmarks via Steam (free demo) :contentReference[oaicite:5]{index=5}
 Write-Host "Installing Steam (for Rocket League and 3DMark) ..."
 winget install --id Valve.Steam -e --accept-source-agreements --accept-package-agreements
