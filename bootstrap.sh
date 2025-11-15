@@ -22,7 +22,7 @@ install_pkg() {
 }
 
 # --- Basic utilities ---
-install_pkg git curl wget openssh-server firefox vlc
+install_pkg git curl wget openssh-server firefox vlc gnome-tweaks
 
 # --- Enable Wake on LAN ---
 for iface in $(nmcli -t -f DEVICE device status | grep -v lo); do
