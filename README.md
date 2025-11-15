@@ -63,7 +63,7 @@ Run **PowerShell as Administrator**:
 
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force
-irm https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/benchmark/bootstrap_phase1.ps1 | iex
+irm https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/main/bootstrap_phase1.ps1 | iex
 ````
 
 Reboot, then continue with Phase 2.
@@ -71,7 +71,7 @@ Reboot, then continue with Phase 2.
 ### Phase 2 (install everything)
 
 ```powershell
-irm https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/benchmark/bootstrap.ps1 | iex
+irm https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/main/bootstrap.ps1 | iex
 ```
 
 ### Phase 3 (optional: Windows 11 debloat)
@@ -89,7 +89,7 @@ Or use the powershell command for an automatic download and execution:
 ## 1b) Linux Setup
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/benchmark/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/main/bootstrap.sh | bash
 ```
 
 ---
@@ -110,7 +110,7 @@ To benchmark your media PC, run the following after completing the main setup.
 ### Linux Benchmarking
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/benchmark/benchmark.sh | bash
+curl -fsSL https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/main/benchmark.sh | bash
 ```
 
 ### Windows Benchmarking
@@ -118,7 +118,7 @@ curl -fsSL https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_
 Open **PowerShell (Admin)** and run:
 
 ```powershell
-irm https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/benchmark/benchmark.ps1 | iex
+irm https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/main/benchmark.ps1 | iex
 ```
 
 ---
@@ -142,7 +142,7 @@ Note 3: Every BIOS is different; refer to your motherboard/laptop manual if poss
 
 ### Linux Setup
 ```bash
-curl -fsSL https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/benchmark/shutdown_server/setup_shutdown_linux.sh | bash
+curl -fsSL https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/main/shutdown_server/setup_shutdown_linux.sh | bash
 ```
 
 This script:
@@ -160,7 +160,7 @@ This script:
 Open **PowerShell (Admin)** and run:
 
 ```powershell
-irm https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/benchmark/shutdown_server/setup_shutdown_windows.ps1 | iex
+irm https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/main/shutdown_server/setup_shutdown_windows.ps1 | iex
 ```
 
 This script:

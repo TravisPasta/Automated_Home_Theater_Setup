@@ -68,7 +68,7 @@ mkdir -p "$TARGET_DIR"
 
 # --- Download shutdown_server.py ---
 echo "[*] Downloading shutdown_server.py from GitHub..."
-DOWNLOAD_URL="https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/benchmark/shutdown_server/shutdown_server.py"
+DOWNLOAD_URL="https://raw.githubusercontent.com/TravisPasta/Automated_Home_Theater_Setup/main/shutdown_server/shutdown_server.py"
 TARGET_FILE="$TARGET_DIR/shutdown_server.py"
 
 if curl -fsSL "$DOWNLOAD_URL" -o "$TARGET_FILE"; then
