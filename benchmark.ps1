@@ -41,7 +41,4 @@ Write-Host "Note: After Steam installation, install 3DMark, Time Spy, Fire Strik
 # Rocket League (note: you will configure settings manually)
 Write-Host "Via Steam: install Rocket League. Then set graphics settings manually."
 
-# 3DMark Storage Benchmark – manual note
-Write-Host "Note: For Storage Benchmark (3DMark Storage), install appropriate 3DMark DLC via Steam after base install."
-
 Write-Host "=== Windows benchmark setup done ==="
