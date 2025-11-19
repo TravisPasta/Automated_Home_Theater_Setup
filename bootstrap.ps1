@@ -4,34 +4,78 @@ Write-Host "=== Phase 2: Automated Home Theater Setup (Windows) ==="
 # Ensure TLS 1.2
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-# Install applications
-$apps = @(
-    "VideoLAN.VLC",
-    "Mozilla.Firefox",
-    "Git.Git",
+# Additional installs
+$apps += @(
+    "7zip.7zip",
+    "Audacity.Audacity",
+    "AutoHotkey.AutoHotkey",
+    "Blizzard.BattleNet",
+    "BlenderFoundation.Blender",
+    "JetBrains.Toolbox",
+    "Overwolf.CurseForge",
+    "Discord.Discord",
+    "EpicGames.EpicGamesLauncher",
+    "FluxSoftware.F.lux",
+    "Flameshot.Flameshot",
+    "GitHub.GitHubDesktop",
+    "GitHub.GitLFS",
+    "HandBrake.HandBrake",
     "Jellyfin.JellyfinMediaPlayer",
-    "9N95Q1ZZPMH4",   # Twinkle Tray (Microsoft Store)
-    "Python.Python.3.14",  # Python 3.14
-    "Plex.Plex"
+    "KDE.Kdenlive",
+    "Microsoft.VisualStudioCode",
+    "Microsoft.MinecraftLauncher",
+    "Notepad++.Notepad++",
+    "OBSProject.OBSStudio",
+    "RedHat.Podman",
+    "Microsoft.PowerShell",
+    "Microsoft.PowerToys",
+    "Mozilla.Firefox",
+    "Plex.Plex",
+    "Python.Python.3.14",
+    "Spotify.Spotify",
+    "Valve.Steam",
+    "Telegram.TelegramDesktop",
+    "Microsoft.WindowsTerminal",
+    "JAMSoftware.TreeSize.Free",
+    "xanderfrangos.TwinkleTray",
+    "Ultimaker.Cura",
+    "Unity.UnityHub",
+    "RARLab.WinRAR",
+    "WireGuard.WireGuard",
+    "VideoLAN.VLC",
+    "Git.Git",
+    "XPDDT99J9GKB5C"        # Samsung Magician Serial
 )
+
 
 foreach ($app in $apps) {
     Write-Host "Installing $app..."
     try { winget install --id $app -e --accept-source-agreements --accept-package-agreements } catch { Write-Host "Failed to install $app" }
 }
 
-# Enable SSH Server
-Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
-Start-Service sshd
-Set-Service -Name sshd -StartupType 'Automatic'
+# Manual install instructions
+Write-Host "⚠ Manual install required for:
+- DaVinci Resolve
+- Native Instruments/ Native Access
+- Samsung Magician (Serial: XPDDT99J9GKB5C)
+- adobe:
+    - media encoder
+    - photoshop
+    - premiere pro
+- AMD Software
+- Bakkesmod
+- DaVinci Resolve
+- Elgato Game Capture HD
+- EOS Webcam Utility
+- Gaomon Tablet
+- Insta360 Studio
+- Logi Options+
+- Make MKV
+- Native Instruments/Native Access (?)
+- Soundcraft Multi-channel USB Audio Interface Driver and Software
+"
 
-# Enable Wake on LAN (best effort)
-Write-Host "Attempting to enable Wake on LAN..."
-Get-NetAdapter | ForEach-Object {
-    powercfg -deviceenablewake "$($_.Name)"
-}
 
 Write-Host "Please go into this repository and run the Windows 11 Debloater script manually."
-Write-Host "If desired, get the new Debloater from: https://github.com/Raphire/Win11Debloat/releases/latest"
 
 Write-Host "=== Windows Setup Complete! ==="
